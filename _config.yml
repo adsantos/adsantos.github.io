@@ -1,0 +1,12 @@
+# Site settings
+title: NSWorld
+email: adrianasucena@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Sharing iOS tips to help myself and hopefully others. I work with
+  Objective-C and Swift.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://http://adsantos.github.io/" # the base hostname & protocol for your site
+github_username:  adsantos
+
+# Build settings
+markdown: kramdown
