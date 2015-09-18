@@ -105,6 +105,20 @@ $ cd MyProject
 $ pod repo push my-specs Project.podspec --allow-warnings
 {% endhighlight %}
 
+5 - All done! You can now use the pod in other projects. You have to include the
+repo source in the Podfile and add all the pods below that line. If you also
+have public pod dependencies, you have
+to mention the public repo source as well and add the dependencies below the
+source, as it is exemplified below.
+
+{% highlight bash %}
+source 'https://github.com/adsantos/MySpecs.git'
+pod 'Project', '~> 0.1.0'
+source 'https://github.com/CocoaPods/Specs.git'
+pod 'AFNetworking'
+pod 'Masonry'
+{% endhighlight %}
+
 [privatePodCocoapodsTutorial]: https://guides.cocoapods.org/making/private-cocoapods.html
 
 [cocoaPodsSpecs]: https://github.com/CocoaPods/Specs.git
