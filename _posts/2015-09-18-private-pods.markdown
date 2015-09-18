@@ -4,17 +4,20 @@ title:  "Create Private Pods"
 date:   2015-09-18 11:40:22
 categories: jekyll update
 ---
-Cocoapods website has a great [tutorial][privatePodCocoapodsTutorial] on how to create a private pod. However, I had to do a few extra steps that weren't described on that tutorial.
+Cocoapods' website has a great [tutorial][privatePodCocoapodsTutorial] on how to create a private pod. However, I had to do a few extra steps that weren't described on that tutorial.
 
 1 - The first step is to create a private repo that will contain all the
-private pods. This means that instead of publishing a public pod in the
-[CocoaPods specs][cocoaPodsSpecs], it will be published on the created private
+private pods. This means that instead of publishing a public pod to the
+[CocoaPods specs][cocoaPodsSpecs], it will be published on the newly created private
 repo. I created one in Github.
 
 {% highlight bash %}
 $ mkdir MySpecs.git
 $ cd MySpecs.git
 $ git init --bare
+$ git add .
+$ git commit -m "Inital commit"
+$ git push origin master
 {% endhighlight %}
 
 2 - Add the repo to the cocoaPods installation.
@@ -39,7 +42,7 @@ $ cd MyProject
 $ pod spec lint Project.podspec
 {% endhighlight %}
 
-If everything is fine, go to step 4.
+If everything is fine, jump to step 4.
 If not, you maybe you got a message like this one:
 
 {% highlight bash %}
