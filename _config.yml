@@ -8,5 +8,10 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://http://adsantos.github.io/" # the base hostname & protocol for your site
 github_username:  adsantos
 
+analytics :
+  provider : google
+  google :
+      tracking_id : 'UA-67877560-1'
+
 # Build settings
 markdown: kramdown
