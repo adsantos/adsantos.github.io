@@ -1,0 +1,213 @@
+---
+layout: post
+title:  "Trees"
+date:   2015-10-11 19:34:22
+categories: jekyll update
+---
+
+I decided to refresh my memory on trees. I started by creating a `Node` object. There was no need to create a `Tree` object, since it would be same as the `Node` object.
+
+{% highlight objective-c %}
+@interface Node : NSObject <NSCopying>
+@property (nonatomic, strong) NSNumber *data;
+@property (nonatomic, strong) Node *leftNode;
+@property (nonatomic, strong) Node *rightNode;
+@end
+{% endhighlight %}
+
+When I needed to test the methods I implemented, it was quite useful to be able to copy the trees, so the `Node` object conforms to the `NSCopying` delegate.
+It was also useful to have a pretty-print of the tree, so I implemented the `description`
+ method.
+
+{% highlight objective-c %}
+#import "Node.h"
+
+@implementation Node
+
+- (id)copyWithZone:(NSZone *)zone {
+    Node *copy = [[[self class] alloc] init];
+    if (copy) {
+        copy.data = self.data;
+        copy.leftNode = [self.data copyWithZone:zone];
+        copy.rightNode = [self.data copyWithZone:zone];
+    }
+    return copy;
+}
+
+- (NSString *)description {
+    if (self.leftNode == nil) {
+        if (self.rightNode == nil) {
+            return [NSString stringWithFormat:@"%@", self.data];
+        }
+        else {
+            return [NSString stringWithFormat:@"%@ %@", self.data, [self.rightNode description]];
+        }
+    }
+    
+    if (self.rightNode == nil) {
+        return [NSString stringWithFormat:@"%@ %@", self.data, [self.leftNode description]];
+    }
+    else {
+        return [NSString stringWithFormat:@"%@ %@ %@", self.data, [self.leftNode description], [self.rightNode description]];
+    }
+}
+
+@end
+{% endhighlight %}
+
+I started by implementing a method that checks if a binary tree is a [binary search tree][bst]. The method returns true if the value in each node is greater than all values stored in the left sub-tree, and smaller than all values in the right sub-tree.
+
+{% highlight objective-c %}
+- (BOOL)isBinarySearchTree:(Node *)tree {
+    
+    return [self isBinarySearchTree:tree min:@(0) max:@(INT_MAX)];
+}
+
+- (BOOL)isBinarySearchTree:(Node *)tree min:(NSNumber *)min max:(NSNumber *)max {
+    if (tree == nil) {
+        return YES;
+    }
+    
+    if (tree.data < min || tree.data > max) {
+        return NO;
+    }
+    
+    BOOL isLeftBST = [self isBinarySearchTree:tree.leftNode min:min max:tree.data];
+    BOOL isRightBST = [self isBinarySearchTree:tree.rightNode min:tree.data max:max];
+    
+    return isLeftBST && isRightBST;
+}
+
+{% endhighlight %}
+
+I then implemented methods that [traverse][treeTraversal] the tree in pre order, in order, post order and level order.
+
+{% highlight objective-c %}
+- (void)preOrder:(Node *)tree {
+    
+    if (tree == nil) {
+        return;
+    }
+    NSLog(@"%@", tree.data);
+    [self preOrder:tree.leftNode];
+    [self preOrder:tree.rightNode];
+}
+
+- (void)inOrder:(Node *)tree {
+    if (tree == nil) {
+        return;
+    }
+    
+    [self preOrder:tree.leftNode];
+    NSLog(@"%@", tree.data);
+    [self preOrder:tree.rightNode];
+}
+
+- (void)postOrder:(Node *)tree {
+    if (tree == nil) {
+        return;
+    }
+    
+    [self preOrder:tree.leftNode];
+    [self preOrder:tree.rightNode];
+    NSLog(@"%@", tree.data);
+}
+
+- (void)levelOrder:(Node *)tree {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    [array addObject:tree];
+    while (array.count > 0) {
+        Node *currentTree = array[0];
+        NSLog(@"%@", [currentTree data]);
+        [array removeObjectAtIndex:0];
+        if (currentTree.leftNode) {
+            [array addObject:currentTree.leftNode];
+        }
+        if (currentTree.rightNode) {
+            [array addObject:currentTree.rightNode];
+        }
+    }
+}
+{% endhighlight %}
+
+I was curious to see how the iterative version for one of the traversal methods would look like, so I gave it a try for the pre order traversal.
+
+{% highlight objective-c %}
+- (void)iterativePreOrder:(Node *)tree {
+    NSMutableArray *rightNodes = [[NSMutableArray alloc] init];
+    
+    while (rightNodes.count > 0 || tree != nil) {
+        if (tree != nil) {
+            NSLog(@"%@", tree.data);
+            if (tree.rightNode) {
+                [rightNodes addObject:tree.rightNode];
+            }
+            tree = tree.leftNode;
+        }
+        else {
+            tree = rightNodes.lastObject;
+            [rightNodes removeLastObject];
+        }
+    }
+}
+{% endhighlight %}
+
+I then implemented a method that checks if a value exists in a binary search tree.
+
+{% highlight objective-c %}
+- (BOOL)searchValue:(NSNumber *)value inBST:(Node *)tree {
+    if ([tree.data isEqual:value]) {
+        return YES;
+    }
+    if (value < tree.data) {
+        if (tree.leftNode) {
+            return [self searchValue:value inBST:tree.leftNode];
+        }
+        else {
+            return NO;
+        }
+    }
+    else {
+        if (tree.rightNode) {
+            return [self searchValue:value inBST:tree.rightNode];
+        }
+        else {
+            return NO;
+        }
+    }
+}
+{% endhighlight %}
+
+Finally I implemented a method to insert a given value into a binary search tree, keeping the tree as a binary search tree after the insertion.
+
+{% highlight objective-c %}
+- (void)insertValue:(NSNumber *)data inTree:(Node *)tree {
+    if ([tree.data isEqualToNumber:data]) {
+        return;
+    }
+    
+    if ([data compare:tree.data] == NSOrderedDescending) { //data is bigger than tree.data -> go right
+        if (tree.rightNode == nil) {
+            Node *newNode = [[Node alloc] init];
+            newNode.data = data;
+            tree.rightNode = newNode;
+            return;
+        }
+        else return [self insertValue:data inTree:tree.rightNode];
+    }
+    else {
+        if (tree.leftNode == nil) {
+            Node *newNode = [[Node alloc] init];
+            newNode.data = data;
+            tree.leftNode = newNode;
+            return;
+        }
+        else {
+            return [self insertValue:data inTree:tree.leftNode];
+        }
+    }
+}
+{% endhighlight %}
+
+[bst]: https://en.wikipedia.org/wiki/Binary_search_tree
+[treeTraversal]: https://en.wikipedia.org/wiki/Tree_traversal
