@@ -11,7 +11,7 @@ github_username:  adsantos
 analytics :
   provider : google
   google :
-      tracking_id : 'UA-67877560-1'
+    tracking_id : 'UA-67877560-1'
 
 # Build settings
 markdown: kramdown
