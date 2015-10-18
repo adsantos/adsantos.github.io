@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Trees"
+title:  "Closest x points"
 date:   2015-10-18 12:00:00
 categories: jekyll update
 ---
@@ -26,14 +26,14 @@ Let's say that I have the points (1,1), (2,4) and (2,1). The 2 closest points to
 
 {% highlight objective-c %}
 - (NSArray *)closestToTheCenterKPoints:(int)k inSet:(NSSet *)set {
-    
+
     if (k == 0) {
         return nil;
     }
-    
+
     NSArray *pointsArray = [set allObjects];
     pointsArray = [pointsArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        
+
         float absoluteDistanceFirstObj = fabs([[(Point2D *)obj1 x] floatValue]) + fabs([[(Point2D *)obj1 y] floatValue]);
         float absoluteDistanceSecondObj = fabs([[(Point2D *)obj2 x] floatValue]) + fabs([[(Point2D *)obj2 y] floatValue]);
         if (absoluteDistanceFirstObj < absoluteDistanceSecondObj) {
@@ -41,11 +41,11 @@ Let's say that I have the points (1,1), (2,4) and (2,1). The 2 closest points to
         }
         return (NSComparisonResult)NSOrderedDescending;
     }];
-    
+
     if ([pointsArray count] < k) {
         k = (int)[pointsArray count];
     }
-    
+
     return [pointsArray subarrayWithRange:NSMakeRange(0, k)];
 }
 {% endhighlight %}
