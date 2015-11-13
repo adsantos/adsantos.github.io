@@ -5,7 +5,7 @@ date:   2015-11-13 17:17:00
 categories: jekyll update
 ---
 
-In the [apple documentation] to support right-to-left languages, it says right at the beginning:
+[Apple documentation] has a guide explaning how to support right-to-left languages in iOS apps. In the guide's first paragraph, the following is mentioned:
 
 ``
 If you use base internationalization and Auto Layout, most of the user interface will appear mirrored automatically for you.
@@ -53,4 +53,4 @@ if ([UIApplication isLanguageLayoutDirectionRightToLeft] && [UIDevice isCurrentI
 
  Those were all the steps I had to follow to support right-to-left alignment.
 
-[apple documentation]: https://developer.apple.com/library/prerelease/ios/documentation/MacOSX/Conceptual/BPInternational/SupportingRight-To-LeftLanguages/SupportingRight-To-LeftLanguages.html
+[Apple documentation]: https://developer.apple.com/library/prerelease/ios/documentation/MacOSX/Conceptual/BPInternational/SupportingRight-To-LeftLanguages/SupportingRight-To-LeftLanguages.html
