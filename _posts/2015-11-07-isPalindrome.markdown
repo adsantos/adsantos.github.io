@@ -5,7 +5,7 @@ date:   2015-11-07 17:55:00
 categories: jekyll update
 ---
 
-I need a method that should check if a given string is a
+I needed a method to check if a given string was a
 [palindrome][palindrome]. Below is a possible implementation with O(n) complexity.
 
 {% highlight objective-c %}

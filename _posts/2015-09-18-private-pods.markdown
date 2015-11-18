@@ -16,7 +16,7 @@ $ mkdir MySpecs.git
 $ cd MySpecs.git
 $ git init --bare
 $ git add .
-$ git commit -m "Inital commit"
+$ git commit -m "Initial commit"
 $ git push origin master
 {% endhighlight %}
 
