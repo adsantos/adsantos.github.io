@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "Sigh - provisioning profile's pain goes away"
+date:   2015-12-05 15:12:00
+categories: jekyll update
+---
+
+The [hockey app] is a great platform to distribute the app beta versions internally (among many other features), so that other people can easily download and use the app under development. It all works great, until the day that the certificate used on the builds expires. From that day, no one will be able to install the builds that have the expired certificate.
+
+After creating a new certificate and new provisioning profiles, the new builds are fine. However, I ended up in a situation where I would like to check if a given bug was a new bug or if it was already in the previous build.
+
+I checked out the relevant branch from git and added the new provioning profiles. In theory, it should work, but it didn't. I started having all those funny provisioing profile errors that XCode enjoys showing, e.g. not being able to find the provioning profile, although everything is setup correctly. I spent a while trying to fix the problem, which it's sometimes fixed by simply closing and opening XCode, but I wasn't succedding. I then went for a different approach: using [sigh]. Here are the steps I followed:
+- Run `sudo gem install sigh` in the terminal.
+- Download the old build from the hockey app.
+- In the terminal, go to the folder where the provioning profiles are installed, within the app.
+- Run a command similar to this: `sigh path_to_the_ipa_file -p "iOS Team Provisioning Profile:provisioning.mobileprovision" -p "Other Provisioning Profile:provisioning.mobileprovision2"`. After pressing enter, I'm asked which certificate I want to use; I copy and paste the relevant one from the list.
+- Upload the new ipa file into the hockey app.
+
+That was all. No more time wasted with funny errors from XCode!
+
+[hockey app]: http://hockeyapp.net/features/
+[sigh]: https://github.com/fastlane/sigh
